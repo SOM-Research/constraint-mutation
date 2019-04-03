@@ -1,0 +1,39 @@
+Invariant ListNode::sizeDefined
+
+ --Original body: 
+ --not self.data->isEmpty
+
+false
+
+Invariant ListNode::isPositive
+
+ --Original body: 
+ --(self.priority >= 1)
+
+(self.priority > 1)
+(self.priority = 1)
+false
+
+Invariant ListNode::monotonicity
+
+ --Original body: 
+ --(not self.next.isUndefined implies (self.priority <= self.next.priority))
+
+(false or (self.priority <= self.next.priority))
+(not not self.next.isUndefined or (self.priority < self.next.priority))
+(not not self.next.isUndefined or (self.priority = self.next.priority))
+(not not self.next.isUndefined or false)
+(false or (self.priority < self.next.priority))
+(false or (self.priority = self.next.priority))
+(false or false)
+(not not self.next.isUndefined and (self.priority <= self.next.priority))
+(false and (self.priority <= self.next.priority))
+(not not self.next.isUndefined and (self.priority < self.next.priority))
+(not not self.next.isUndefined and (self.priority = self.next.priority))
+(not not self.next.isUndefined and false)
+(false or (self.priority < self.next.priority))
+(false or (self.priority = self.next.priority))
+(false or false)
+(not not self.next.isUndefined xor (self.priority <= self.next.priority))
+false
+

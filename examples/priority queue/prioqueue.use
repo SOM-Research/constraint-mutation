@@ -1,0 +1,45 @@
+model PriorityQueue
+
+class Queue
+attributes
+operations
+	insertNode(prio:Integer, data:Data)
+	removeTop()
+	getTop() : Data
+	isEmpty() : Boolean
+end
+
+class ListNode
+attributes
+  priority : Integer
+operations
+	node(prio:Integer, data:Data, next:ListNode)
+	successors(nodes:Set(ListNode)):Set(ListNode)  = if nodes->includes(self) or next.oclIsUndefined() then nodes   
+													 else next.successors(nodes->including(self)) endif
+end
+
+class Data
+attributes
+end
+
+association Queue_ListNode between
+  Queue [1] role queue
+  ListNode [1] role first
+end
+
+association ListNode_ListNode between
+  ListNode [0..1] role next
+  ListNode [0..1] role prev
+end
+
+association ListNode_Data between
+  ListNode [1] role node
+  Data [1] role data
+end
+
+constraints
+
+--context ListNode
+--     inv sizeDefined: not self.data->isEmpty()
+--     inv isPositive: priority >= 1
+--     inv monotonicity: (not next.oclIsUndefined()) implies priority <= next.priority

@@ -1,0 +1,247 @@
+model Royals_and_Loyals 
+
+class CustomerCard
+attributes
+	valid : Boolean init: true                             
+	validFrom : Date
+	validThru : Date
+	color : Color
+	printedName : String
+operations
+	getTotalPoints( d: Date ) : Integer
+end
+						  
+class Transaction
+attributes
+	points:Integer
+	data : Date
+	amount :Real
+operations
+	program() : LoyaltyProgram
+end
+
+class Burning < Transaction
+end
+
+class Earning < Transaction
+end
+
+class Customer
+attributes
+	name : String
+	title : String
+	isMale : Boolean
+	dateOfBirth : Date
+	age : Integer
+operations
+	age_m() : Integer = age
+	birthdayHappens()
+end
+
+class Service
+attributes
+	condition : Boolean
+	pointsEarned : Integer
+	pointsBurned : Integer
+	description : String
+	serviceNr : Integer
+operations
+	calcPoints() : Integer
+	upgradePointsEarned(amount : Integer)
+end
+
+class ServiceLevel
+attributes
+	name : String
+operations
+end
+
+
+class LoyaltyAccount
+attributes
+	points : Integer init: 0
+	number : Integer
+operations
+	earn(i:Integer)
+	burn(i:Integer)
+	isEmpty():Boolean
+	getCustomerName():String
+end
+
+class LoyaltyProgram
+attributes
+	name : String
+operations
+	enroll(c : Customer) : Boolean
+	getServices(pp : ProgramPartner) : Boolean
+	getCustomerName() : String
+	addTransaction(accNr:Integer, pName:String, serv:Integer, amnt:Real):Boolean
+end	
+
+class Membership
+end
+
+class ProgramPartner
+attributes
+	numberOfCustomers : Integer
+	name : String
+end
+
+class Date
+attributes
+	now : Integer
+operations
+	isBefore(t : Date) : Boolean = now < t.now
+	isAfter(t : Date) : Boolean = now > t.now
+	fromYMD(y : Integer,m : Integer,d : Integer) : Date
+end
+
+enum Color {Silver, Gold}
+
+----------------------------------------------------------
+
+association ServiceLevel_Service between
+	ServiceLevel [1] role level
+	Service [0..*] role availableServices
+end
+
+association LoyaltyProgram_ProgramPartner between
+	LoyaltyProgram [1..*] role programs
+	ProgramPartner [1..*] role partners
+end
+
+association ProgramPartner_Service between
+	ProgramPartner [1] role partners
+	Service [0..*] role deliveredServices
+end
+
+association LoyaltyProgram_ServiceLevel between
+	LoyaltyProgram [1] role program
+	ServiceLevel [1..*] role levels ordered
+end
+
+association LoyaltyProgram_Membership between
+	LoyaltyProgram [1] role programs
+	Membership [0..*] role membership
+end
+
+association Customer_Membership between
+	Customer [1] role participants
+	Membership [0..*] role membership
+end
+
+association LoyaltyAccount_Membership between
+	LoyaltyAccount [0..1] role account
+	Membership [0..*] role membership
+end
+
+association ServiceLevel_Membership between
+	ServiceLevel [1] role currentLevel
+	Membership [0..*] role membership
+end
+
+association CustomerCard_Membership between
+	CustomerCard [1] role card
+	Membership [1] role membership
+end
+
+association Customer_CustomerCard between
+	Customer [1] role owner
+	CustomerCard [0..*] role cards
+end
+
+association Transaction_CustomerCard between
+	Transaction [0..*] role transactions
+	CustomerCard [1] role card
+end
+
+association Service_Transaction between
+	Service [1] role generatedBy
+	Transaction [0..*] role transactions
+end
+
+association LoyaltyAccount_Transaction between
+	LoyaltyAccount [1] role account
+	Transaction [0..*] role transactions
+end
+
+
+----------------------------------------------------------------------------------
+constraints
+	
+context Service 
+   inv serv1: self.pointsEarned > 0 implies not (self.pointsBurned = 0) 
+  
+context ServiceLevel 
+   inv servLevel1: not program.partners->isEmpty()
+
+context CustomerCard 
+   inv checkDates: validFrom.isBefore(validThru)
+   inv ofAge: owner.age >= 18
+   inv card3: self.owner.membership.programs->size() > 0
+   inv card4: self.transactions->select( t: Transaction| t.points > 10 )->notEmpty()
+
+context Customer
+    inv cust1:   not self.membership.programs->isEmpty()
+    inv cust2:   self.age_m() > 21 and self.age_m() < 65 
+    inv cust3:   self.age_m() <= 12 xor cards->size() > 3 
+    inv cust4:   title = 'Mr.' or title = 'Ms.' 
+    inv ofAge: age >= 18
+    inv cust7: cards->select( c: CustomerCard| c.valid = true )->size() > 1
+    inv cust8: not Membership.allInstances->collect(m | m.account)->select(a:LoyaltyAccount| a.points > 0 )->isEmpty()
+    inv cust9: not Membership.allInstances->collect(m | m.account)->reject( not (points > 0) )->isEmpty()
+    inv cust10: Membership.allInstances->collect(m | m.account)->any( number < 0 ).oclIsUndefined()
+	inv cust11: not self.membership.programs->collect(lp: LoyaltyProgram | lp.partners)->collectNested(deliveredServices )->isEmpty() 
+    inv cust12: membership.programs->size() >= cards->select( c: CustomerCard| c.valid = true )->size()
+	
+context LoyaltyAccount 
+   inv oneOwner: transactions.card.owner->asSet()->size() = 1
+   inv account2: transactions->size() >= 1
+   inv Points: points > 0 implies transactions->exists(t:Transaction | t.points > 0)
+   inv Transactions: transactions.points->exists(p : Integer |  p < 500 )
+
+context LoyaltyProgram 
+  inv knownServiceLevel: levels->includesAll(self.membership.currentLevel)
+  inv minServices: partners.deliveredServices ->size() >= 1
+  inv noAccounts: partners.deliveredServices->forAll( pointsEarned = 0 and pointsBurned = 0 ) implies self.membership.account->isEmpty() 
+  --inv program4: levels->first() = levels->first()
+  inv firstLevel: levels->exists(le | le.name = 'basic')
+  inv program6: partners.deliveredServices->forAll(s:Service| s.pointsEarned = 0) 
+	   or 
+	   self.membership.card->forAll(c:CustomerCard | c.validThru.now = 20) 
+	   or 
+	   membership.participants->forAll(c:Customer| c.age_m() > 55)
+   inv program7: partners.deliveredServices->forAll(s: Service|s.pointsEarned = 0) 
+   inv program8: membership.participants->forAll(p:Customer | p.age_m() > 55)
+   inv program9: levels->includesAll( self.membership.currentLevel ) 
+   inv program10: self.levels->exists(sl:ServiceLevel| sl.name = 'basic')
+   inv program11: self.membership.participants->size() < 10000
+   inv program12: self.membership->collect(m | m.account)->asSet()->isUnique( acc: LoyaltyAccount | acc.number )
+   inv program13: membership.participants->forAll( c:Customer | c.age_m() <= 70 )
+   inv program14: self.membership.participants->forAll(c1 : Customer, c2:Customer | c1 <> c2 implies c1.name <> c2.name)
+   inv program15: self.membership.participants->forAll( c1 : Customer| self.membership.participants->forAll( c2 : Customer | c1 <> c2 implies c1.name <> c2.name ))
+   inv program16: self.membership.account->asSet()->one( number < 10 )
+   
+context Membership 
+  inv correctCard: participants.cards->includes(self.card)
+  inv levelAndColor: currentLevel.name = 'Silver' implies card.color = Color::Silver and currentLevel.name = 'Gold' implies card.color = Color::Gold
+--  inv noEarnings: programs.partners.deliveredServices->forAll(pointsEarned = 0) implies account->isEmpty()
+  inv membership4: account.points >= 0 or account->isEmpty()
+  inv membership5: participants.cards.membership->includes(self)
+  inv membership6: programs.levels->includes(currentLevel)
+  inv membership7: not account->isEmpty() 
+  inv membership8: programs.levels ->includes(currentLevel)
+  
+context ProgramPartner 
+  inv nrOfParticipants: numberOfCustomers = programs.membership.participants->asSet()->size()
+  inv programPartner2:  numberOfCustomers = programs->collect(p:LoyaltyProgram| p.membership.participants)->asSet()->size()
+  inv nrOfParticipants2: numberOfCustomers = programs.membership.participants->asSet()->size()
+--  inv totalPoints: deliveredServices.transactions.points->sum() < 10000
+  inv programPartner5:  deliveredServices->collect(s:Service| s.transactions)->select(t:Transaction|t.oclIsTypeOf(Earning))
+      		       ->collect(t:Transaction|t.points)->size()>0 
+  inv totalPointsEarning2: deliveredServices.transactions->select(t:Transaction|t.oclIsTypeOf(Earning))->asSet().points->sum() < 200
+  inv programPartner7: self.programs.partners->select(p : ProgramPartner | p <> self)->isEmpty()
+
+
+-- CTs
+-- LoyaltyAccount.allInstances->forAll(a | a.transactions.points->forAll(p : Integer |  p < 500 ))

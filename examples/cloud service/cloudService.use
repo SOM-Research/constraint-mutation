@@ -1,0 +1,61 @@
+model CloudService
+
+enum Scope {continental, worldwide}
+
+class Customer
+attributes	
+	name : String
+	budget : Integer
+	premium : Boolean
+end
+
+class Order
+attributes
+	dataVol : Integer	
+	scope : Scope
+end
+
+class CloudService
+attributes
+	provider : String
+	maxDataVol : Integer
+	scope : Scope
+	unitPrice : Integer
+end
+
+association Customer_Order between
+Customer [1] role cust
+Order [*] role ord
+end
+
+association Order_CloudService between
+Order [*] role ord
+CloudService [1] role serv
+end
+
+constraints
+
+context c1,c2:Customer inv uniqueName:
+	c1<>c2 implies c1.name<>c2.name
+	
+context Customer inv orderWithinBudget:
+	self.ord->forAll(o | self.budget >= o.dataVol*o.serv.unitPrice)
+	
+context cs1,cs2:CloudService inv uniqueProviderMaxDataVol:
+	cs1<>cs2 implies cs1.provider<>cs2.provider or cs1.maxDataVol<>cs2.maxDataVol
+	
+context cs1,cs2:CloudService inv continentalCheaperThanWorldwide:
+	cs1.maxDataVol=cs2.maxDataVol and cs1.scope=#continental and cs2.scope=#worldwide implies cs1.unitPrice>=cs2.unitPrice
+	
+context cs1,cs2:CloudService inv highVolumeCheaperUnitPrice:
+	cs1.provider=cs2.provider and cs1.scope=cs1.scope and cs1.maxDataVol<=cs2.maxDataVol implies cs1.unitPrice>=cs2.unitPrice
+	
+context Order inv noExceedServiceDataVol:
+	self.dataVol <= self.serv.maxDataVol	
+	
+context Customer inv minimumDataVolCompany:
+	self.premium implies self.ord->exists(o | o.dataVol>=5)
+	
+	
+	
+	
