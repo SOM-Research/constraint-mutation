@@ -16,6 +16,9 @@ import org.tzi.use.uml.ocl.expr.ExpConstEnum;
 import org.tzi.use.uml.ocl.expr.ExpConstInteger;
 import org.tzi.use.uml.ocl.expr.ExpConstReal;
 import org.tzi.use.uml.ocl.expr.ExpConstString;
+import org.tzi.use.uml.ocl.expr.ExpConstUBoolean;
+import org.tzi.use.uml.ocl.expr.ExpConstUInteger;
+import org.tzi.use.uml.ocl.expr.ExpConstUReal;
 import org.tzi.use.uml.ocl.expr.ExpConstUnlimitedNatural;
 import org.tzi.use.uml.ocl.expr.ExpEmptyCollection;
 import org.tzi.use.uml.ocl.expr.ExpExists;
@@ -48,6 +51,12 @@ import org.tzi.use.uml.ocl.expr.ExpSortedBy;
 import org.tzi.use.uml.ocl.expr.ExpStdOp;
 import org.tzi.use.uml.ocl.expr.ExpTupleLiteral;
 import org.tzi.use.uml.ocl.expr.ExpTupleSelectOp;
+import org.tzi.use.uml.ocl.expr.ExpUExists;
+import org.tzi.use.uml.ocl.expr.ExpUForAll;
+import org.tzi.use.uml.ocl.expr.ExpUIsUnique;
+import org.tzi.use.uml.ocl.expr.ExpUOne;
+import org.tzi.use.uml.ocl.expr.ExpUReject;
+import org.tzi.use.uml.ocl.expr.ExpUSelect;
 import org.tzi.use.uml.ocl.expr.ExpUndefined;
 import org.tzi.use.uml.ocl.expr.ExpVariable;
 import org.tzi.use.uml.ocl.expr.ExpressionVisitor;
@@ -1151,6 +1160,60 @@ public class StrengthenVisitor extends BooleanVisitor {
 		} else {
 			wrongTypeError("variable of type " + exp.type().toString() );
 		}
+	}
+
+	@Override
+	public void visitConstUBoolean(ExpConstUBoolean exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitConstUInteger(ExpConstUInteger exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitConstUReal(ExpConstUReal exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitUExists(ExpUExists exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitUForAll(ExpUForAll exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitUSelect(ExpUSelect exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitUReject(ExpUReject exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitUIsUnique(ExpUIsUnique exp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitUOne(ExpUOne exp) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
