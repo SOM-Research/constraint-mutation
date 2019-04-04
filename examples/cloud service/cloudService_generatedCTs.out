@@ -1,0 +1,259 @@
+Invariant CloudService::nonNegativeDataVol
+
+ --Original body: 
+ --(self.maxDataVol >= 0)
+
+(self.maxDataVol > 0)
+(self.maxDataVol = 0)
+false
+
+Invariant Customer::minimumDataVolCompany
+
+ --Original body: 
+ --(self.premium implies self.ord->forAll(o : Order | (o.dataVol >= 5)))
+
+(false or self.ord->forAll(o : Order | (o.dataVol >= 5)))
+(not self.premium or self.ord->forAll(o : Order | (o.dataVol > 5)))
+(not self.premium or self.ord->forAll(o : Order | (o.dataVol = 5)))
+(not self.premium or self.ord->forAll(o : Order | false))
+(not self.premium or false)
+(false or self.ord->forAll(o : Order | (o.dataVol > 5)))
+(false or self.ord->forAll(o : Order | (o.dataVol = 5)))
+(false or self.ord->forAll(o : Order | false))
+(false or false)
+(not self.premium and self.ord->forAll(o : Order | (o.dataVol >= 5)))
+(false and self.ord->forAll(o : Order | (o.dataVol >= 5)))
+(not self.premium and self.ord->forAll(o : Order | (o.dataVol > 5)))
+(not self.premium and self.ord->forAll(o : Order | (o.dataVol = 5)))
+(not self.premium and self.ord->forAll(o : Order | false))
+(not self.premium and false)
+(false or self.ord->forAll(o : Order | (o.dataVol > 5)))
+(false or self.ord->forAll(o : Order | (o.dataVol = 5)))
+(false or self.ord->forAll(o : Order | false))
+(false or false)
+(not self.premium xor self.ord->forAll(o : Order | (o.dataVol >= 5)))
+false
+
+Invariant CloudService::uniqueProviderMaxDataVol
+
+ --Original body: 
+ --((cs1 <> cs2) implies ((cs1.provider <> cs2.provider) or (cs1.maxDataVol <> cs2.maxDataVol)))
+
+(false or ((cs1.provider <> cs2.provider) or (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) or (false or (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) or (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) or (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) or false))
+(not (cs1 <> cs2) or (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) or (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) or (false or false))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) or (false and (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) and false))
+(not (cs1 <> cs2) or (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) or (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) or (false or false))
+(not (cs1 <> cs2) or ((cs1.provider <> cs2.provider) xor (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) or false)
+(false or (false or (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) or (cs1.maxDataVol < cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) or (cs1.maxDataVol > cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) or false))
+(false or (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(false or (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(false or (false or false))
+(false or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or (false and (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol < cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol > cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) and false))
+(false or (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(false or (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(false or (false or false))
+(false or ((cs1.provider <> cs2.provider) xor (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or false)
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) or (cs1.maxDataVol <> cs2.maxDataVol)))
+(false and ((cs1.provider <> cs2.provider) or (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) and (false or (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) or (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) or (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) or false))
+(not (cs1 <> cs2) and (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) and (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) and (false or false))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) and (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) and (false and (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) and (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) and (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) and false))
+(not (cs1 <> cs2) and (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(not (cs1 <> cs2) and (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(not (cs1 <> cs2) and (false or false))
+(not (cs1 <> cs2) and ((cs1.provider <> cs2.provider) xor (cs1.maxDataVol <> cs2.maxDataVol)))
+(not (cs1 <> cs2) and false)
+(false or (false or (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) or (cs1.maxDataVol < cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) or (cs1.maxDataVol > cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) or false))
+(false or (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(false or (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(false or (false or false))
+(false or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or (false and (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol < cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) and (cs1.maxDataVol > cs2.maxDataVol)))
+(false or ((cs1.provider <> cs2.provider) and false))
+(false or (false or (cs1.maxDataVol < cs2.maxDataVol)))
+(false or (false or (cs1.maxDataVol > cs2.maxDataVol)))
+(false or (false or false))
+(false or ((cs1.provider <> cs2.provider) xor (cs1.maxDataVol <> cs2.maxDataVol)))
+(false or false)
+(not (cs1 <> cs2) xor ((cs1.provider <> cs2.provider) or (cs1.maxDataVol <> cs2.maxDataVol)))
+false
+
+Invariant CloudService::nonNegativeUnitPrice
+
+ --Original body: 
+ --(self.unitPrice > 0)
+
+(self.unitPrice > (0 + 1))
+false
+
+Invariant Customer::uniqueName
+
+ --Original body: 
+ --((c1 <> c2) implies (c1.name <> c2.name))
+
+(false or (c1.name <> c2.name))
+(not (c1 <> c2) or false)
+(false or false)
+(not (c1 <> c2) and (c1.name <> c2.name))
+(false and (c1.name <> c2.name))
+(not (c1 <> c2) and false)
+(false or false)
+(not (c1 <> c2) xor (c1.name <> c2.name))
+false
+
+Invariant Order::noExceedServiceDataVol
+
+ --Original body: 
+ --(self.dataVol <= self.serv.maxDataVol)
+
+(self.dataVol < self.serv.maxDataVol)
+(self.dataVol = self.serv.maxDataVol)
+false
+
+Invariant Customer::orderWithinBudget
+
+ --Original body: 
+ --self.ord->forAll(o : Order | (self.budget >= (o.dataVol * o.serv.unitPrice)))
+
+self.ord->forAll(o : Order | (self.budget > (o.dataVol * o.serv.unitPrice)))
+self.ord->forAll(o : Order | (self.budget = (o.dataVol * o.serv.unitPrice)))
+self.ord->forAll(o : Order | false)
+false
+
+Invariant Order::dataVolInDiscretePieces
+
+ --Original body: 
+ --(((self.dataVol = 1) or (self.dataVol = 5)) or (self.dataVol = 10))
+
+((false or (self.dataVol = 5)) or (self.dataVol = 10))
+(((self.dataVol = 1) or false) or (self.dataVol = 10))
+((false or false) or (self.dataVol = 10))
+(((self.dataVol = 1) and (self.dataVol = 5)) or (self.dataVol = 10))
+((false and (self.dataVol = 5)) or (self.dataVol = 10))
+(((self.dataVol = 1) and false) or (self.dataVol = 10))
+((false or false) or (self.dataVol = 10))
+(((self.dataVol = 1) xor (self.dataVol = 5)) or (self.dataVol = 10))
+(false or (self.dataVol = 10))
+(((self.dataVol = 1) or (self.dataVol = 5)) or false)
+((false or (self.dataVol = 5)) or false)
+(((self.dataVol = 1) or false) or false)
+((false or false) or false)
+(((self.dataVol = 1) and (self.dataVol = 5)) or false)
+((false and (self.dataVol = 5)) or false)
+(((self.dataVol = 1) and false) or false)
+((false or false) or false)
+(((self.dataVol = 1) xor (self.dataVol = 5)) or false)
+(false or false)
+(((self.dataVol = 1) or (self.dataVol = 5)) and (self.dataVol = 10))
+((false or (self.dataVol = 5)) and (self.dataVol = 10))
+(((self.dataVol = 1) or false) and (self.dataVol = 10))
+((false or false) and (self.dataVol = 10))
+(((self.dataVol = 1) and (self.dataVol = 5)) and (self.dataVol = 10))
+((false and (self.dataVol = 5)) and (self.dataVol = 10))
+(((self.dataVol = 1) and false) and (self.dataVol = 10))
+((false or false) and (self.dataVol = 10))
+(((self.dataVol = 1) xor (self.dataVol = 5)) and (self.dataVol = 10))
+(false and (self.dataVol = 10))
+(((self.dataVol = 1) or (self.dataVol = 5)) and false)
+((false or (self.dataVol = 5)) or false)
+(((self.dataVol = 1) or false) or false)
+((false or false) or false)
+(((self.dataVol = 1) and (self.dataVol = 5)) or false)
+((false and (self.dataVol = 5)) or false)
+(((self.dataVol = 1) and false) or false)
+((false or false) or false)
+(((self.dataVol = 1) xor (self.dataVol = 5)) or false)
+(false or false)
+(((self.dataVol = 1) or (self.dataVol = 5)) xor (self.dataVol = 10))
+false
+
+Invariant Order::noNegativeDataVol
+
+ --Original body: 
+ --(self.dataVol >= 0)
+
+(self.dataVol > 0)
+(self.dataVol = 0)
+false
+
+Invariant CloudService::continentalCheaperThanWorldwide
+
+ --Original body: 
+ --((((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) implies (cs1.unitPrice >= cs2.unitPrice))
+
+(false or (cs1.unitPrice >= cs2.unitPrice))
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) or (cs1.unitPrice > cs2.unitPrice))
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) or (cs1.unitPrice = cs2.unitPrice))
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) or false)
+(false or (cs1.unitPrice > cs2.unitPrice))
+(false or (cs1.unitPrice = cs2.unitPrice))
+(false or false)
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) and (cs1.unitPrice >= cs2.unitPrice))
+(false and (cs1.unitPrice >= cs2.unitPrice))
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) and (cs1.unitPrice > cs2.unitPrice))
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) and (cs1.unitPrice = cs2.unitPrice))
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) and false)
+(false or (cs1.unitPrice > cs2.unitPrice))
+(false or (cs1.unitPrice = cs2.unitPrice))
+(false or false)
+(not (((cs1.maxDataVol = cs2.maxDataVol) and (cs1.scope = Scope::continental)) and (cs2.scope = Scope::worldwide)) xor (cs1.unitPrice >= cs2.unitPrice))
+false
+
+Invariant CloudService::highVolumeCheaperUnitPrice
+
+ --Original body: 
+ --((((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) implies (cs1.unitPrice >= cs2.unitPrice))
+
+(false or (cs1.unitPrice >= cs2.unitPrice))
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) or (cs1.unitPrice > cs2.unitPrice))
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) or (cs1.unitPrice = cs2.unitPrice))
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) or false)
+(false or (cs1.unitPrice > cs2.unitPrice))
+(false or (cs1.unitPrice = cs2.unitPrice))
+(false or false)
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) and (cs1.unitPrice >= cs2.unitPrice))
+(false and (cs1.unitPrice >= cs2.unitPrice))
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) and (cs1.unitPrice > cs2.unitPrice))
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) and (cs1.unitPrice = cs2.unitPrice))
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) and false)
+(false or (cs1.unitPrice > cs2.unitPrice))
+(false or (cs1.unitPrice = cs2.unitPrice))
+(false or false)
+(not (((cs1.provider = cs2.provider) and (cs1.scope = cs1.scope)) and (cs1.maxDataVol <= cs2.maxDataVol)) xor (cs1.unitPrice >= cs2.unitPrice))
+false
+

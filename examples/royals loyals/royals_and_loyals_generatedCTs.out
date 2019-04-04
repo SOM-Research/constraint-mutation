@@ -1,0 +1,626 @@
+Invariant ProgramPartner::programPartner7
+
+ --Original body: 
+ --self.programs->collect($e : LoyaltyProgram | $e.partners)->select(p : ProgramPartner | (p <> self))->isEmpty
+
+false
+
+Invariant ProgramPartner::programPartner5
+
+ --Original body: 
+ --(self.deliveredServices->collect(s : Service | s.transactions)->select(t : Transaction | t.oclIsTypeOf(Earning))->collect(t : Transaction | t.points)->size > 0)
+
+(self.deliveredServices->collect(s : Service | s.transactions)->select(t : Transaction | t.oclIsTypeOf(Earning))->collect(t : Transaction | t.points)->size > (0 + 1))
+false
+
+Invariant CustomerCard::card3
+
+ --Original body: 
+ --(self.owner.membership->collect($e : Membership | $e.programs)->size > 0)
+
+(self.owner.membership->collect($e : Membership | $e.programs)->size > (0 + 1))
+false
+
+Invariant CustomerCard::card4
+
+ --Original body: 
+ --self.transactions->select(t : Transaction | (t.points > 10))->notEmpty
+
+false
+
+Invariant Membership::membership5
+
+ --Original body: 
+ --self.participants.cards->collect($e : CustomerCard | $e.membership)->includes(self)
+
+false
+
+Invariant Membership::membership4
+
+ --Original body: 
+ --((self.account.points >= 0) or self.account->isEmpty)
+
+((self.account.points > 0) or self.account->isEmpty)
+((self.account.points = 0) or self.account->isEmpty)
+(false or self.account->isEmpty)
+((self.account.points >= 0) or false)
+((self.account.points > 0) or false)
+((self.account.points = 0) or false)
+(false or false)
+((self.account.points >= 0) and self.account->isEmpty)
+((self.account.points > 0) and self.account->isEmpty)
+((self.account.points = 0) and self.account->isEmpty)
+(false and self.account->isEmpty)
+((self.account.points >= 0) and false)
+((self.account.points > 0) or false)
+((self.account.points = 0) or false)
+(false or false)
+((self.account.points >= 0) xor self.account->isEmpty)
+false
+
+Invariant Customer::cust1
+
+ --Original body: 
+ --not self.membership->collect($e : Membership | $e.programs)->isEmpty
+
+false
+
+Invariant Customer::cust2
+
+ --Original body: 
+ --((self.age_m() > 21) and (self.age_m() < 65))
+
+((self.age_m() > (21 + 1)) and (self.age_m() < 65))
+(false and (self.age_m() < 65))
+((self.age_m() > 21) and ((self.age_m() + 1) < 65))
+((self.age_m() > 21) and false)
+((self.age_m() > (21 + 1)) and ((self.age_m() + 1) < 65))
+((self.age_m() > (21 + 1)) and false)
+(false and ((self.age_m() + 1) < 65))
+(false and false)
+
+Invariant LoyaltyAccount::oneOwner
+
+ --Original body: 
+ --(self.transactions->collect($e : Transaction | $e.card)->collect($e : CustomerCard | $e.owner)->asSet->size = 1)
+
+false
+
+Invariant ProgramPartner::programPartner2
+
+ --Original body: 
+ --(self.numberOfCustomers = self.programs->collect(p : LoyaltyProgram | p.membership->collect($e : Membership | $e.participants))->asSet->size)
+
+false
+
+Invariant Customer::cust12
+
+ --Original body: 
+ --(self.membership->collect($e : Membership | $e.programs)->size >= self.cards->select(c : CustomerCard | (c.valid = true))->size)
+
+(self.membership->collect($e : Membership | $e.programs)->size > self.cards->select(c : CustomerCard | (c.valid = true))->size)
+(self.membership->collect($e : Membership | $e.programs)->size = self.cards->select(c : CustomerCard | (c.valid = true))->size)
+false
+
+Invariant Customer::cust10
+
+ --Original body: 
+ --Membership.allInstances->collect(m : Membership | m.account)->any($elem1 : LoyaltyAccount | ($elem1.number < 0)).isUndefined
+
+false
+
+Invariant Customer::cust11
+
+ --Original body: 
+ --not self.membership->collect($e : Membership | $e.programs)->collect(lp : LoyaltyProgram | lp.partners)->collectNested($elem2 : ProgramPartner | $elem2.deliveredServices)->isEmpty
+
+false
+
+Invariant LoyaltyProgram::minServices
+
+ --Original body: 
+ --(self.partners->collect($e : ProgramPartner | $e.deliveredServices)->size >= 1)
+
+(self.partners->collect($e : ProgramPartner | $e.deliveredServices)->size > 1)
+(self.partners->collect($e : ProgramPartner | $e.deliveredServices)->size = 1)
+false
+
+Invariant ProgramPartner::nrOfParticipants
+
+ --Original body: 
+ --(self.numberOfCustomers = self.programs->collect($e : LoyaltyProgram | $e.membership)->collect($e : Membership | $e.participants)->asSet->size)
+
+false
+
+Invariant LoyaltyAccount::Transactions
+
+ --Original body: 
+ --self.transactions->collect($e : Transaction | $e.points)->exists(p : Integer | (p < 500))
+
+self.transactions->collect($e : Transaction | $e.points)->exists(p : Integer | ((p + 1) < 500))
+self.transactions->collect($e : Transaction | $e.points)->exists(p : Integer | false)
+(self.transactions->collect($e : Transaction | $e.points)->forAll(p : Integer | (p < 500)) and (self.transactions->collect($e : Transaction | $e.points)->size >= 1))
+false
+
+Invariant Membership::membership8
+
+ --Original body: 
+ --self.programs.levels->includes(self.currentLevel)
+
+false
+
+Invariant Membership::levelAndColor
+
+ --Original body: 
+ --(((self.currentLevel.name = 'Silver') implies ((self.card.color = Color::Silver) and (self.currentLevel.name = 'Gold'))) implies (self.card.color = Color::Gold))
+
+(false or (self.card.color = Color::Gold))
+(not ((self.currentLevel.name = 'Silver') implies ((self.card.color = Color::Silver) and (self.currentLevel.name = 'Gold'))) or false)
+(false or false)
+(not ((self.currentLevel.name = 'Silver') implies ((self.card.color = Color::Silver) and (self.currentLevel.name = 'Gold'))) and (self.card.color = Color::Gold))
+(false and (self.card.color = Color::Gold))
+(not ((self.currentLevel.name = 'Silver') implies ((self.card.color = Color::Silver) and (self.currentLevel.name = 'Gold'))) and false)
+(false or false)
+(not ((self.currentLevel.name = 'Silver') implies ((self.card.color = Color::Silver) and (self.currentLevel.name = 'Gold'))) xor (self.card.color = Color::Gold))
+false
+
+Invariant Membership::membership7
+
+ --Original body: 
+ --not self.account->isEmpty
+
+false
+
+Invariant Membership::membership6
+
+ --Original body: 
+ --self.programs.levels->includes(self.currentLevel)
+
+false
+
+Invariant ProgramPartner::nrOfParticipants2
+
+ --Original body: 
+ --(self.numberOfCustomers = self.programs->collect($e : LoyaltyProgram | $e.membership)->collect($e : Membership | $e.participants)->asSet->size)
+
+false
+
+Invariant LoyaltyAccount::account2
+
+ --Original body: 
+ --(self.transactions->size >= 1)
+
+(self.transactions->size > 1)
+(self.transactions->size = 1)
+false
+
+Invariant ServiceLevel::servLevel1
+
+ --Original body: 
+ --not self.program.partners->isEmpty
+
+false
+
+Invariant Membership::correctCard
+
+ --Original body: 
+ --self.participants.cards->includes(self.card)
+
+false
+
+Invariant CustomerCard::checkDates
+
+ --Original body: 
+ --self.validFrom.isBefore(self.validThru)
+
+false
+
+Invariant LoyaltyAccount::Points
+
+ --Original body: 
+ --((self.points > 0) implies self.transactions->exists(t : Transaction | (t.points > 0)))
+
+(false or self.transactions->exists(t : Transaction | (t.points > 0)))
+(not (self.points > 0) or self.transactions->exists(t : Transaction | (t.points > (0 + 1))))
+(not (self.points > 0) or self.transactions->exists(t : Transaction | false))
+(not (self.points > 0) or (self.transactions->forAll(t : Transaction | (t.points > 0)) and (self.transactions->size >= 1)))
+(not (self.points > 0) or false)
+(false or self.transactions->exists(t : Transaction | (t.points > (0 + 1))))
+(false or self.transactions->exists(t : Transaction | false))
+(false or (self.transactions->forAll(t : Transaction | (t.points > 0)) and (self.transactions->size >= 1)))
+(false or false)
+(not (self.points > 0) and self.transactions->exists(t : Transaction | (t.points > 0)))
+(false and self.transactions->exists(t : Transaction | (t.points > 0)))
+(not (self.points > 0) and self.transactions->exists(t : Transaction | (t.points > (0 + 1))))
+(not (self.points > 0) and self.transactions->exists(t : Transaction | false))
+(not (self.points > 0) and (self.transactions->forAll(t : Transaction | (t.points > 0)) and (self.transactions->size >= 1)))
+(not (self.points > 0) and false)
+(false or self.transactions->exists(t : Transaction | (t.points > (0 + 1))))
+(false or self.transactions->exists(t : Transaction | false))
+(false or (self.transactions->forAll(t : Transaction | (t.points > 0)) and (self.transactions->size >= 1)))
+(false or false)
+(not (self.points > 0) xor self.transactions->exists(t : Transaction | (t.points > 0)))
+false
+
+Invariant LoyaltyProgram::knownServiceLevel
+
+ --Original body: 
+ --self.levels->includesAll(self.membership->collect($e : Membership | $e.currentLevel))
+
+false
+
+Invariant Service::serv1
+
+ --Original body: 
+ --((self.pointsEarned > 0) implies not (self.pointsBurned = 0))
+
+(false or not (self.pointsBurned = 0))
+(not (self.pointsEarned > 0) or false)
+(false or false)
+(not (self.pointsEarned > 0) and not (self.pointsBurned = 0))
+(false and not (self.pointsBurned = 0))
+(not (self.pointsEarned > 0) and false)
+(false or false)
+(not (self.pointsEarned > 0) xor not (self.pointsBurned = 0))
+false
+
+Invariant LoyaltyProgram::program8
+
+ --Original body: 
+ --self.membership->collect($e : Membership | $e.participants)->forAll(p : Customer | (p.age_m() > 55))
+
+self.membership->collect($e : Membership | $e.participants)->forAll(p : Customer | (p.age_m() > (55 + 1)))
+self.membership->collect($e : Membership | $e.participants)->forAll(p : Customer | false)
+false
+
+Invariant LoyaltyProgram::program9
+
+ --Original body: 
+ --self.levels->includesAll(self.membership->collect($e : Membership | $e.currentLevel))
+
+false
+
+Invariant LoyaltyProgram::program10
+
+ --Original body: 
+ --self.levels->exists(sl : ServiceLevel | (sl.name = 'basic'))
+
+self.levels->exists(sl : ServiceLevel | false)
+(self.levels->forAll(sl : ServiceLevel | (sl.name = 'basic')) and (self.levels->size >= 1))
+false
+
+Invariant Customer::ofAge
+
+ --Original body: 
+ --(self.age >= 18)
+
+(self.age > 18)
+(self.age = 18)
+false
+
+Invariant CustomerCard::ofAge
+
+ --Original body: 
+ --(self.owner.age >= 18)
+
+(self.owner.age > 18)
+(self.owner.age = 18)
+false
+
+Invariant LoyaltyProgram::program12
+
+ --Original body: 
+ --self.membership->collect(m : Membership | m.account)->asSet->isUnique(acc : LoyaltyAccount | acc.number)
+
+(self.membership->collect(m : Membership | m.account)->asSet->size <= 1)
+false
+
+Invariant LoyaltyProgram::program11
+
+ --Original body: 
+ --(self.membership->collect($e : Membership | $e.participants)->size < 10000)
+
+((self.membership->collect($e : Membership | $e.participants)->size + 1) < 10000)
+false
+
+Invariant LoyaltyProgram::program14
+
+ --Original body: 
+ --self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | ((c1 <> c2) implies (c1.name <> c2.name)))
+
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (false or (c1.name <> c2.name)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (not (c1 <> c2) or false))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (false or false))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (not (c1 <> c2) and (c1.name <> c2.name)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (false and (c1.name <> c2.name)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (not (c1 <> c2) and false))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (false or false))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | (not (c1 <> c2) xor (c1.name <> c2.name)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer, c2 : Customer | false)
+false
+
+Invariant LoyaltyProgram::program6
+
+ --Original body: 
+ --((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+(false or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or false)
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or false)
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+(false or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+(false or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+(false or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or false) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((false or false) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+(false and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) and false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or false)
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) and false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false) or false) or false)
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | false)) or false)
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((false or false) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((false or false) or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) xor self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) or false)
+(false or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > (55 + 1))))
+(false or self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false))
+(false or false)
+((self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0)) or self.membership->collect($e : Membership | $e.card)->forAll(c : CustomerCard | (c.validThru.now = 20))) xor self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() > 55)))
+false
+
+Invariant LoyaltyProgram::program13
+
+ --Original body: 
+ --self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() <= 70))
+
+self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() < 70))
+self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | (c.age_m() = 70))
+self.membership->collect($e : Membership | $e.participants)->forAll(c : Customer | false)
+false
+
+Invariant LoyaltyProgram::program7
+
+ --Original body: 
+ --self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | (s.pointsEarned = 0))
+
+self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll(s : Service | false)
+false
+
+Invariant LoyaltyProgram::program16
+
+ --Original body: 
+ --self.membership->collect($e : Membership | $e.account)->asSet->one($elem4 : LoyaltyAccount | ($elem4.number < 10))
+
+
+Invariant LoyaltyProgram::program15
+
+ --Original body: 
+ --self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | ((c1 <> c2) implies (c1.name <> c2.name))))
+
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (false or (c1.name <> c2.name))))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (not (c1 <> c2) or false)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (false or false)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (not (c1 <> c2) and (c1.name <> c2.name))))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (false and (c1.name <> c2.name))))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (not (c1 <> c2) and false)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (false or false)))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | (not (c1 <> c2) xor (c1.name <> c2.name))))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | self.membership->collect($e : Membership | $e.participants)->forAll(c2 : Customer | false))
+self.membership->collect($e : Membership | $e.participants)->forAll(c1 : Customer | false)
+false
+
+Invariant Customer::cust3
+
+ --Original body: 
+ --((self.age_m() <= 12) xor (self.cards->size > 3))
+
+((self.age_m() <= 12) and not (self.cards->size > 3))
+(not (self.age_m() <= 12) and (self.cards->size > 3))
+
+Invariant Customer::cust4
+
+ --Original body: 
+ --((self.title = 'Mr.') or (self.title = 'Ms.'))
+
+(false or (self.title = 'Ms.'))
+((self.title = 'Mr.') or false)
+(false or false)
+((self.title = 'Mr.') and (self.title = 'Ms.'))
+(false and (self.title = 'Ms.'))
+((self.title = 'Mr.') and false)
+(false or false)
+((self.title = 'Mr.') xor (self.title = 'Ms.'))
+false
+
+Invariant Customer::cust9
+
+ --Original body: 
+ --not Membership.allInstances->collect(m : Membership | m.account)->reject($elem0 : LoyaltyAccount | not ($elem0.points > 0))->isEmpty
+
+false
+
+Invariant LoyaltyProgram::firstLevel
+
+ --Original body: 
+ --self.levels->exists(le : ServiceLevel | (le.name = 'basic'))
+
+self.levels->exists(le : ServiceLevel | false)
+(self.levels->forAll(le : ServiceLevel | (le.name = 'basic')) and (self.levels->size >= 1))
+false
+
+Invariant Customer::cust7
+
+ --Original body: 
+ --(self.cards->select(c : CustomerCard | (c.valid = true))->size > 1)
+
+(self.cards->select(c : CustomerCard | (c.valid = true))->size > (1 + 1))
+false
+
+Invariant Customer::cust8
+
+ --Original body: 
+ --not Membership.allInstances->collect(m : Membership | m.account)->select(a : LoyaltyAccount | (a.points > 0))->isEmpty
+
+false
+
+Invariant ProgramPartner::totalPointsEarning2
+
+ --Original body: 
+ --(self.deliveredServices->collect($e : Service | $e.transactions)->select(t : Transaction | t.oclIsTypeOf(Earning))->asSet->collect($e : Transaction | $e.points)->sum < 200)
+
+((self.deliveredServices->collect($e : Service | $e.transactions)->select(t : Transaction | t.oclIsTypeOf(Earning))->asSet->collect($e : Transaction | $e.points)->sum + 1) < 200)
+false
+
+Invariant LoyaltyProgram::noAccounts
+
+ --Original body: 
+ --(self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll($elem3 : Service | (($elem3.pointsEarned = 0) and ($elem3.pointsBurned = 0))) implies self.membership->collect($e : Membership | $e.account)->isEmpty)
+
+(false or self.membership->collect($e : Membership | $e.account)->isEmpty)
+(not self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll($elem3 : Service | (($elem3.pointsEarned = 0) and ($elem3.pointsBurned = 0))) or false)
+(false or false)
+(not self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll($elem3 : Service | (($elem3.pointsEarned = 0) and ($elem3.pointsBurned = 0))) and self.membership->collect($e : Membership | $e.account)->isEmpty)
+(false and self.membership->collect($e : Membership | $e.account)->isEmpty)
+(not self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll($elem3 : Service | (($elem3.pointsEarned = 0) and ($elem3.pointsBurned = 0))) and false)
+(false or false)
+(not self.partners->collect($e : ProgramPartner | $e.deliveredServices)->forAll($elem3 : Service | (($elem3.pointsEarned = 0) and ($elem3.pointsBurned = 0))) xor self.membership->collect($e : Membership | $e.account)->isEmpty)
+false
+
