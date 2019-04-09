@@ -1,0 +1,1 @@
+LoyaltyAccount.allInstances->forAll(t | t.transactions.points->forAll(p : Integer |  p < 100 ))

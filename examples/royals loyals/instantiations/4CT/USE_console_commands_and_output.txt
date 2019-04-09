@@ -1,0 +1,316 @@
+use> mv -scrollingAllCT "C:\Users\Lola\Dropbox\UOC\papers\2019\ER\case studies\Royals loyals\royals_and_loyals.properties"
+13:28:31 INFO: Start model transformation for `Royals_and_Loyals'
+
+13:28:32 INFO: Invariant transformation successful
+
+13:28:32 INFO: Model transformation successful
+
+13:28:32 INFO: Translation time: 320 ms
+
+Input classifying terms (leave empty to abort, enter `v' or `validate' to start validation, names may be empty)
+Enter name for term 1 or `v' to start validation: 1
+Enter term `1': LoyaltyAccount.allInstances->forAll(t | t.transactions.points->forAll(p : Integer |  p < 100 ))
+13:28:40 WARN: Collect operation `t.transactions->collect($e : Transaction | $e.points)' results in unsupported type `Bag'. It will be interpreted as `Set'.
+
+13:28:40 INFO: Read term [1]
+
+Enter name for term 2 or `v' to start validation: 2
+Enter term `2': Membership.allInstances->forAll(m | (m.account.points > 0) or m.account->isEmpty)
+13:28:49 INFO: Read term [2]
+
+Enter name for term 3 or `v' to start validation: 3
+Enter term `3': ProgramPartner.allInstances->forAll(p | p.deliveredServices->collect(s : Service | s.transactions)->select(t : Transaction | t.oclIsTypeOf(Earning))->collect(t : Transaction | t.points)->size > (1))
+13:28:59 WARN: Collect operation `p.deliveredServices->collect(s : Service | s.transactions)->select(t : Transaction | t.oclIsTypeOf(Earning))->collect(t : Transaction | t.points)' results in unsupported type `Bag'. It will be interpreted as `Set'.
+
+13:28:59 WARN: Collect operation `p.deliveredServices->collect(s : Service | s.transactions)' results in unsupported type `Bag'. It will be interpreted as `Set'.
+
+13:28:59 INFO: Read term [3]
+
+Enter name for term 4 or `v' to start validation: 4
+Enter term `4': Customer.allInstances->forAll(cu | (cu.age_m() > (21 + 1)) and ((cu.age_m() + 1) < 65))
+13:29:09 INFO: Read term [4]
+
+Enter name for term 5 or `v' to start validation: v
+13:29:10 INFO: No configuration name given. Using first configuration of the file.
+
+13:29:10 INFO: Model configuration successful
+
+13:29:10 INFO: Object diagram extraction successful.
+
+13:29:10 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+13:31:56 INFO: SATISFIABLE
+
+13:31:56 INFO: Translation time: 2625 ms; Solving time: 163548 ms
+
+13:31:56 INFO: Create object diagram
+
+13:31:56 INFO: Term values for this solution:
+1: false
+2: true
+3: false
+4: true
+
+13:31:56 INFO: Found solution no. 1
+
+13:31:56 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+13:33:43 INFO: SATISFIABLE
+
+13:33:43 INFO: Translation time: 2898 ms; Solving time: 104046 ms
+
+13:33:43 INFO: Create object diagram
+
+13:33:43 INFO: Term values for this solution:
+1: false
+2: true
+3: false
+4: false
+
+13:33:43 INFO: Found solution no. 2
+
+13:33:43 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+13:41:22 INFO: SATISFIABLE
+
+13:41:22 INFO: Translation time: 2913 ms; Solving time: 455358 ms
+
+13:41:22 INFO: Create object diagram
+
+13:41:22 INFO: Term values for this solution:
+1: true
+2: true
+3: false
+4: false
+
+13:41:22 INFO: Found solution no. 3
+
+13:41:22 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+13:52:48 INFO: SATISFIABLE
+
+13:52:48 INFO: Translation time: 3111 ms; Solving time: 683061 ms
+
+13:52:48 INFO: Create object diagram
+
+13:52:48 INFO: Term values for this solution:
+1: true
+2: true
+3: false
+4: true
+
+13:52:48 INFO: Found solution no. 4
+
+13:52:48 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:00:05 INFO: SATISFIABLE
+
+14:00:05 INFO: Translation time: 2579 ms; Solving time: 434796 ms
+
+14:00:05 INFO: Create object diagram
+
+14:00:05 INFO: Invariant `ProgramPartner::totalPointsEarning2' is not fulfilled in generated system state.
+
+14:00:05 INFO: Term values for this solution:
+1: false
+2: true
+3: true
+4: false
+
+14:00:05 INFO: Found solution no. 5
+
+14:00:05 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:05:18 INFO: SATISFIABLE
+
+14:05:18 INFO: Translation time: 2923 ms; Solving time: 310054 ms
+
+14:05:18 INFO: Create object diagram
+
+14:05:18 INFO: Invariant `ProgramPartner::totalPointsEarning2' is not fulfilled in generated system state.
+
+14:05:18 INFO: Term values for this solution:
+1: false
+2: true
+3: true
+4: true
+
+14:05:18 INFO: Found solution no. 6
+
+14:05:18 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:10:01 INFO: SATISFIABLE
+
+14:10:01 INFO: Translation time: 2677 ms; Solving time: 280300 ms
+
+14:10:01 INFO: Create object diagram
+
+14:10:01 INFO: Term values for this solution:
+1: false
+2: false
+3: false
+4: false
+
+14:10:01 INFO: Found solution no. 7
+
+14:10:01 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:17:33 INFO: SATISFIABLE
+
+14:17:33 INFO: Translation time: 2741 ms; Solving time: 448927 ms
+
+14:17:33 INFO: Create object diagram
+
+14:17:33 INFO: Invariant `ProgramPartner::totalPointsEarning2' is not fulfilled in generated system state.
+
+14:17:33 INFO: Term values for this solution:
+1: false
+2: false
+3: true
+4: false
+
+14:17:33 INFO: Found solution no. 8
+
+14:17:33 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:24:51 INFO: SATISFIABLE
+
+14:24:51 INFO: Translation time: 2823 ms; Solving time: 434918 ms
+
+14:24:51 INFO: Create object diagram
+
+14:24:51 INFO: Term values for this solution:
+1: true
+2: true
+3: true
+4: false
+
+14:24:51 INFO: Found solution no. 9
+
+14:24:51 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:33:09 INFO: SATISFIABLE
+
+14:33:09 INFO: Translation time: 2783 ms; Solving time: 495300 ms
+
+14:33:09 INFO: Create object diagram
+
+14:33:09 INFO: Term values for this solution:
+1: false
+2: false
+3: false
+4: true
+
+14:33:09 INFO: Found solution no. 10
+
+14:33:09 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:39:38 INFO: SATISFIABLE
+
+14:39:38 INFO: Translation time: 2660 ms; Solving time: 386318 ms
+
+14:39:38 INFO: Create object diagram
+
+14:39:38 INFO: Term values for this solution:
+1: true
+2: false
+3: false
+4: false
+
+14:39:38 INFO: Found solution no. 11
+
+14:39:38 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:46:09 INFO: SATISFIABLE
+
+14:46:09 INFO: Translation time: 2699 ms; Solving time: 388732 ms
+
+14:46:09 INFO: Create object diagram
+
+14:46:09 INFO: Term values for this solution:
+1: true
+2: false
+3: false
+4: true
+
+14:46:09 INFO: Found solution no. 12
+
+14:46:09 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+14:54:48 INFO: SATISFIABLE
+
+14:54:48 INFO: Translation time: 2737 ms; Solving time: 515707 ms
+
+14:54:48 INFO: Create object diagram
+
+14:54:48 INFO: Term values for this solution:
+1: true
+2: true
+3: true
+4: true
+
+14:54:48 INFO: Found solution no. 13
+
+14:54:48 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+15:03:12 INFO: SATISFIABLE
+
+15:03:12 INFO: Translation time: 2832 ms; Solving time: 501550 ms
+
+15:03:12 INFO: Create object diagram
+
+15:03:12 INFO: Invariant `ProgramPartner::totalPointsEarning2' is not fulfilled in generated system state.
+
+15:03:12 INFO: Term values for this solution:
+1: false
+2: false
+3: true
+4: true
+
+15:03:12 INFO: Found solution no. 14
+
+15:03:12 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+15:03:12 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+15:10:04 INFO: SATISFIABLE
+
+15:10:04 INFO: Translation time: 2899 ms; Solving time: 408289 ms
+
+15:10:04 INFO: Create object diagram
+
+15:10:04 INFO: Term values for this solution:
+1: true
+2: false
+3: true
+4: false
+
+15:10:04 INFO: Found solution no. 15
+
+15:10:04 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+15:19:12 INFO: SATISFIABLE
+
+15:19:12 INFO: Translation time: 2760 ms; Solving time: 545267 ms
+
+15:19:12 INFO: Create object diagram
+
+15:19:12 INFO: Term values for this solution:
+1: true
+2: false
+3: true
+4: true
+
+15:19:12 INFO: Found solution no. 16
+
+15:19:12 INFO: Searching solution with SatSolver `DefaultSAT4J' and bitwidth 12...
+
+15:19:22 INFO: UNSATISFIABLE
+
+15:19:22 INFO: Translation time: 2548 ms; Solving time: 7289 ms
+
+15:19:22 INFO: `previous' to get the last solution
+
+15:19:22 INFO: Found 16 solutions
+
+use>

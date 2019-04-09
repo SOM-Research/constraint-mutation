@@ -1,0 +1,7 @@
+LoyaltyAccount.allInstances->forAll(t | t.transactions.points->forAll(p : Integer |  p < 100 ))
+
+Membership.allInstances->forAll(m | (m.account.points > 0) or m.account->isEmpty)
+
+ProgramPartner.allInstances->forAll(p | p.deliveredServices->collect(s : Service | s.transactions)->select(t : Transaction | t.oclIsTypeOf(Earning))->collect(t : Transaction | t.points)->size > (1))
+
+Customer.allInstances->forAll(cu | (cu.age_m() > (21 + 1)) and ((cu.age_m() + 1) < 65))
